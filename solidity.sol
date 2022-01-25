@@ -1,6 +1,6 @@
 pragma solidity ^0.4.18;
 
-contract Game1 {
+contract Game {
   address public player1;
   address public player2;
 
@@ -23,9 +23,7 @@ contract Game1 {
   }
   function registerAsPlayer2() public{
     require(player2 == address(0));
-
     player2 = msg.sender;
-
     GameStartingEvent(player1, player2);
   }
 
@@ -42,7 +40,29 @@ contract Game1 {
       player2Bid = player2Bid + msg.value;
     }
     if(player1Played && player2Played){
-      if(player1Bid >= player2Bid * 2)
+      if(player1Bid >= player2Bid * 2){
+        endOfGame(player1);
+      }else if (player2Bid >= player1Bid * 2) {
+        endOfGame(player2);
+      }else{
+        endOfRound();
+      }
+
     }
+  }
+
+  function endOfRound() internal {
+    player1Played = false;
+    player2Played = false;
+    EndOfRoundEvent(player1Bid, player2Bid);
+  }
+  function endOfGame(address winningPlayer) internal {
+    gameFinished = true;
+    winner = winningPlayer;
+
+    gains = player1Bid + player2Bid;
+    EndOfGameEvent(winner, gains);
+
+
   }
 }

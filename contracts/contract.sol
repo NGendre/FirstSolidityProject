@@ -1,5 +1,5 @@
-pragma solidity ^0.4.18;
-
+pragma solidity ^;
+// UPDATE VERSION
 contract Game {
   address public player1;
   address public player2;

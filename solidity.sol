@@ -4,6 +4,9 @@ contract Game1 {
   address public player1;
   address public player2;
 
+  bool public player1Played;
+  bool public player2Played;
+
   uint private player1Bid;
   uint private player2Bid;
 
@@ -27,6 +30,19 @@ contract Game1 {
   }
 
   function play() public payable{
-    require(!)
+    require(!gameFinished && (msg.sender == player1 || msg.sender == player2));
+
+    if(msg.sender == player1){
+      require(player1Played == false);
+      player1Played = true;
+      player1Bid = player1Bid + msg.value;
+    }else{
+      require(player2Bid == false);
+      player2Played = true;
+      player2Bid = player2Bid + msg.value;
+    }
+    if(player1Played && player2Played){
+      if(player1Bid >= player2Bid * 2)
+    }
   }
 }
